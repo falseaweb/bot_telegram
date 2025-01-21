@@ -1,39 +1,34 @@
 from telegram import Update
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+from telegram.ext import ApplicationBuilder, MessageHandler, filters, CommandHandler, ContextTypes
 
-# Reemplaza con el token de tu bot
-TOKEN = '8031295943:AAHUy_-K3ZCCi7bYQqLMl4z5DPeaDxXX31o'
+BOT_TOKEN = "8031295943:AAHUy_-K3ZCCi7bYQqLMl4z5DPeaDxXX31o"
+TARGET_GROUP_ID = 1638870587  # Reemplaza con el ID del grupo objetivo
 
-# Función que maneja los mensajes y muestra el ID del grupo
-def get_chat_id(update: Update, context: CallbackContext):
-    # Imprime el ID del grupo en la consola
-    chat_id = update.message.chat_id
-    print(f"ID del grupo: {chat_id}")
-    update.message.reply_text(f"El ID de este grupo es: {chat_id}")
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Mensaje de bienvenida para el comando /start."""
+    await update.message.reply_text("Â¡Hola! Estoy activo.")
 
-# Función para iniciar el bot
-def start(update: Update, context: CallbackContext):
-    update.message.reply_text('¡Hola! Menciona al bot para que te dé el ID del grupo.')
+async def mention_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Maneja menciones al bot."""
+    if update.message:
+        # Eliminar la menciÃ³n al bot
+        text = update.message.text.replace(f"@{context.bot.username}", "").strip()
 
-# Función principal
-def main():
-    # Usamos el token que creaste
-    updater = Updater(TOKEN)
+        # Reenviar el mensaje al grupo objetivo
+        await context.bot.send_message(chat_id=TARGET_GROUP_ID, text=text)
 
-    # Obtén el dispatcher para registrar los manejadores
-    dispatcher = updater.dispatcher
+        # Confirmar al usuario
+        await update.message.reply_text("Mensaje enviado al grupo.")
 
-    # Manejador para el comando /start
-    dispatcher.add_handler(CommandHandler("start", start))
+if __name__ == "__main__":
+    # Crear la aplicaciÃ³n del bot
+    application = ApplicationBuilder().token(BOT_TOKEN).build()
 
-    # Manejador para obtener el ID del grupo
-    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, get_chat_id))
+    # Comando /start
+    application.add_handler(CommandHandler("start", start))
 
-    # Inicia el bot
-    updater.start_polling()
+    # Manejador para mensajes que mencionen al bot
+    application.add_handler(MessageHandler(filters.TEXT & filters.Entity("mention"), mention_handler))
 
-    # Mantiene el bot funcionando hasta que se detenga
-    updater.idle()
-
-if __name__ == '__main__':
-    main()
+    # Iniciar el bot
+    application.run_polling()
