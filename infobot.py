@@ -37,5 +37,11 @@ def main():
 
     # Mantiene el bot funcionando hasta que se detenga
     updater.idle()
-
-
+    
+if __name__ == "__main__":
+    # Ejecuta el bot en un hilo separado
+    Thread(target=run_bot).start()
+    
+ # Inicia el servidor Flask
+    port = int(os.getenv("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
