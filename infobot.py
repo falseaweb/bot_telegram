@@ -5,7 +5,7 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, MessageHandler, filters, ContextTypes
 
 # Variables de entorno
-BOT_TOKEN = os.getenv("8031295943:AAHUy_-K3ZCCi7bYQqLMl4z5DPeaDxXX31o")
+BOT_TOKEN = os.getenv(8031295943:AAHUy_-K3ZCCi7bYQqLMl4z5DPeaDxXX31o)
 
 # Inicializa el bot
 application = ApplicationBuilder().token(BOT_TOKEN).build()
