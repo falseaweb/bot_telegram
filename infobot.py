@@ -27,7 +27,7 @@ def main():
     dispatcher.add_handler(CommandHandler("start", start))
 
     # Manejador para obtener el ID del grupo
-    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, get_chat_id))
+    dispatcher.add_handler(MessageHandler(filters.text & ~filters.command, get_chat_id))
 
     # Inicia el bot
     updater.start_polling()
