@@ -4,9 +4,7 @@ from telegram.ext import ApplicationBuilder, MessageHandler, filters, CommandHan
 BOT_TOKEN = "8031295943:AAHUy_-K3ZCCi7bYQqLMl4z5DPeaDxXX31o"
 TARGET_GROUP_ID = 1638870587  # Reemplaza con el ID del grupo objetivo
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Mensaje de bienvenida para el comando /start."""
-    await update.message.reply_text("¡Hola! Estoy activo.")
+
 
 async def mention_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Maneja menciones al bot."""
