@@ -1,12 +1,11 @@
-
 import os
 from flask import Flask
-from threading import Thread
+import asyncio
 from telegram import Update
 from telegram.ext import ApplicationBuilder, MessageHandler, filters, ContextTypes
 
 # Variables de entorno
-BOT_TOKEN =  '8031295943:AAHUy_-K3ZCCi7bYQqLMl4z5DPeaDxXX31o'
+BOT_TOKEN = os.getenv('8031295943:AAHUy_-K3ZCCi7bYQqLMl4z5DPeaDxXX31o')
 
 # Inicializa el bot
 application = ApplicationBuilder().token(BOT_TOKEN).build()
@@ -27,15 +26,19 @@ app = Flask(__name__)
 def index():
     return "El bot está funcionando correctamente."
 
-def run_bot():
-    """Ejecución del bot en un hilo separado."""
-    application.run_polling()
+async def run_bot():
+    """Ejecución del bot en un loop asyncio."""
+    await application.run_polling()
 
 if __name__ == "__main__":
-    # Ejecuta el bot en un hilo separado
-    bot_thread = Thread(target=run_bot)
-    bot_thread.start()
+    # Crear un loop de eventos para ejecutar el bot y Flask en paralelo
+    loop = asyncio.get_event_loop()
 
-    # Inicia el servidor Flask
+    # Inicia el bot en el loop de eventos
+    loop.create_task(run_bot())
+
+    # Ejecuta el servidor Flask
     port = int(os.getenv("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
+
