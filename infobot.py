@@ -1,3 +1,6 @@
+import os
+from flask import Flask
+from threading import Thread
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, MessageHandler, filters, CallbackContext
 
