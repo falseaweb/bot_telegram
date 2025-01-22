@@ -35,4 +35,4 @@ def main():
     # Mantiene el bot funcionando hasta que se detenga
     updater.idle()
 
-if __name__ == '__main__':
+
