@@ -1,3 +1,4 @@
+
 import os
 from flask import Flask
 from threading import Thread
@@ -17,7 +18,7 @@ async def get_group_id(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(f"El ID de este grupo es: {chat_id}")
 
 # Configura los manejadores del bot
-application.add_handler(MessageHandler(filters.TEXT & filters.Group(), get_group_id))
+application.add_handler(MessageHandler(filters.TEXT & filters.ChatType.GROUPS, get_group_id))
 
 # Flask para el Web Service
 app = Flask(__name__)
